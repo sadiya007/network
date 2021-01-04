@@ -1,0 +1,55 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <script>
+    var csrftoken = '{{ csrf_token }}';
+    var username = '{{ user.username }}';
+    </script>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="posts-selector">
+      <label id="allPostsLabel" class="btn btn-outline-secondary active">
+        <input type="radio" name="options" id="allPosts" autocomplete="off">All
+      </label>
+      <label id="followingPostsLabel" class="btn btn-outline-secondary">
+        <input type="radio" name="options" id="followingPosts" autocomplete="off">Following
+      </label>
+    </div>
+    {% endif %}
+
+    <div id="posts-view">
+      <h3>Latest Posts</h3>
+    </div>
+    <nav aria-label="Page navigation example" id="paginatorNav">
+      <ul class="pagination justify-content-center">
+        <li id="previuosListItemPag" class="page-item">
+          <a id="previousLinkPag" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li id="nextListItemPag" class="page-item">
+          <a id="nextLinkPag" class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="new-post-view">
+      <h3>New Post</h3>
+      {% if user.is_authenticated %}
+      <div class="newpost_container">
+        <form action="{% url 'network:post' %}" method="post" style="height:100%;width:100%">
+          {% csrf_token %}
+          <div class="form-group">
+          {{ postForm.as_p }}
+          </div>
+          <input class="btn btn-primary" type="submit" value="Post">
+        </form>
+      </div>
+      {% else %}
+      Not signed in.
+      {% endif %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/common.js' %}"></script>
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}

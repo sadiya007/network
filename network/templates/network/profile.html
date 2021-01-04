@@ -1,0 +1,37 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+  <script>
+  var csrftoken = '{{ csrf_token }}';
+  var username = '{{ user.username }}';
+  var profileusername = '{{ usernamestr }}'
+  </script>
+  <div class="container-fluid">
+    <div id="profileHeaderContainer">
+        <h3>{{ usernamestr }}'s profile</h3>
+        {% if user.is_authenticated and request.user.username != usernamestr %}
+        <button type="button" class="btn-sm btn-outline-primary rounded-pill" id="buttonFollow" data-following="{{ following }}" data-user="{{ usernamestr }}">Follow</button>
+        {% endif %}
+    </div>
+    <p>Following <strong>{{ followingCount }}</strong> users and followed by <strong>{{ followersCount }}</strong> other users</p>
+    <div class="container-fluid" id="user-posts-view">
+      <h3>Latests Posts</h3>
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li id="previuosListItemPag" class="page-item">
+          <a id="previousLinkPag" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li id="nextListItemPag" class="page-item">
+          <a id="nextLinkPag" class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/common.js' %}"></script>
+    <script src="{% static 'network/profile.js' %}"></script>
+{% endblock %}
